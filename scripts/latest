@@ -1,0 +1,29 @@
+#!/bin/sh
+
+usage_str="Usage: $(basename $0) [ -h ] [ -a ] [ location ] [ num ]"
+
+lsargs="-lhtr"
+if [ $# -gt 0 ] && [ "$1" = "-a" ]; then
+    lsargs="${lsargs}a"
+    shift
+fi
+
+if [ $# -gt 0 ] && [ "${1:0:1}" = "-" ]; then
+    echo >&2 "$usage_str"
+    exit 1
+fi
+
+location="."
+if [ $# -gt 0 ]; then
+    location=$1
+    shift
+fi
+
+num=10
+if [ $# -gt 0 ]; then
+    num=$1
+    shift
+fi
+
+ls "$lsargs" "$location" | tail -n $num
+
